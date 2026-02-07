@@ -7,7 +7,7 @@
 const char* ssid = "iGrowth";
 const char* pass = "new1234~!";
 
-const char* mqttHost = "192.168.14.73";
+const char* mqttHost = "223.171.136.185";
 const int   mqttPort = 1883;
 
 WiFiClient net;
@@ -56,9 +56,14 @@ void connectMQTT() {
   while (!mqtt.connected()) {
     String clientId = "uno-r4-";
     clientId += String(millis());
-    if (mqtt.connect(clientId.c_str())) {
+    //                                  safety(안전센서)(도메인-아파트 id-space id-ho id)로 조합한 계정
+    if (mqtt.connect(clientId.c_str(), "safety1n1", "0000")) {
       // PUB-only (QoS0)
+
     } else {
+      Serial.print("MQTT connect failed, rc=");
+      Serial.println(mqtt.state());
+
       delay(1000);
     }
   }
